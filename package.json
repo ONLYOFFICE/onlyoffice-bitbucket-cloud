@@ -1,0 +1,15 @@
+{
+  "name": "@onlyoffice/bitbucket-cloud",
+  "version": "1.0.7",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  },
+  "dependencies": {
+    "@forge/api": "^7.0.2",
+    "@forge/resolver": "1.7.1"
+  }
+}

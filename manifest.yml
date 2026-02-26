@@ -1,0 +1,22 @@
+modules:
+  bitbucket:repoCodeFileViewer:
+    - key: onlyoffice-app-for-bitbucket-cloud-repository-code-file-viewer
+      resource: main
+      resolver:
+        function: resolver
+      title: ONLYOFFICE app for Bitbucket Cloud
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/file-viewer/build
+permissions:
+  scopes:
+    - read:repository:bitbucket
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/855aea4e-e3c0-438f-82bc-d7ade1a9bae2
