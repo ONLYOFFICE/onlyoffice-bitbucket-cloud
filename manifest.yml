@@ -5,15 +5,33 @@ modules:
       resolver:
         function: resolver
       title: ONLYOFFICE app for Bitbucket Cloud
+  webtrigger:
+    - key: file-proxy
+      function: file-proxy-handler
+      response:
+        type: dynamic
   function:
     - key: resolver
       handler: index.handler
+    - key: file-proxy-handler
+      handler: index.fileProxyHandler
 resources:
   - key: main
     path: static/file-viewer/build
 permissions:
   scopes:
     - read:repository:bitbucket
+  content:
+    scripts:
+      - 'unsafe-inline'
+    styles:
+      - 'unsafe-inline'
+  external:
+    scripts:
+      - address: https://asc.docs.teamlab.info
+    frames:
+      - address: https://asc.docs.teamlab.info
+
 app:
   runtime:
     name: nodejs24.x
