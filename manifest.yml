@@ -10,7 +10,7 @@ modules:
       handler: index.handler
 remotes:
   - key: onlyoffice-remote
-    baseUrl: https://d5a2-101-44-32-127.ngrok-free.app
+    baseUrl: https://b077-82-148-2-47.ngrok-free.app
     operations:
       - compute
     auth:
@@ -34,7 +34,7 @@ permissions:
       - 'unsafe-inline'
   external:
     frames:
-      - address: https://d5a2-101-44-32-127.ngrok-free.app
+      - address: https://b077-82-148-2-47.ngrok-free.app
 
 app:
   runtime:

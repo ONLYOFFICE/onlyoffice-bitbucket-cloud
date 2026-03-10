@@ -1,15 +1,16 @@
-import Resolver from '@forge/resolver';
+import Resolver, { Request } from '@forge/resolver';
 import { invokeRemote } from '@forge/api';
 
 const resolver = new Resolver();
 
-resolver.define('getEditorUrl', async ({ payload }) => {
-  console.log(payload);
-  const workspaceId = payload.workspaceId;
-  const repositoryId = payload.repositoryId;
-  const commit = payload.commit;
-  const filePath = payload.filePath;
-  const locale = payload.locale;
+resolver.define('getEditorUrl', async (request: Request) => {
+  const {
+    workspaceId,
+    repositoryId,
+    commit,
+    filePath,
+    locale,
+  } = request.payload;
 
   try {
     const response = await invokeRemote('onlyoffice-remote', {
