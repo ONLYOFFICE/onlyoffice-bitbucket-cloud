@@ -1,16 +1,31 @@
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/${FORGE_APP_ID}
+
+environment:
+  variables:
+    - key: FORGE_APP_ID
+      default: 855aea4e-e3c0-438f-82bc-d7ade1a9bae2
+    - key: FORGE_REMOTE_APP_URL
+      default: https://b077-82-148-2-47.ngrok-free.app
+
 modules:
   bitbucket:repoCodeFileViewer:
-    - key: onlyoffice-app-for-bitbucket-cloud-repository-code-file-viewer
-      resource: main
+    - key: onlyoffice-viewer
+      resource: custom-ui
       resolver:
         function: resolver
       title: ONLYOFFICE Viewer
   function:
     - key: resolver
       handler: index.handler
+
 remotes:
   - key: onlyoffice-remote
-    baseUrl: https://b077-82-148-2-47.ngrok-free.app
+    baseUrl: ${FORGE_REMOTE_APP_URL}
     operations:
       - compute
     auth:
@@ -18,9 +33,11 @@ remotes:
         enabled: true
       appUserToken:
         enabled: true
+
 resources:
-  - key: main
-    path: static/file-viewer/build
+  - key: custom-ui
+    path: static/onlyoffice-bitbucket-cloud-custom-ui/build
+
 permissions:
   scopes:
     - read:repository:bitbucket
@@ -34,11 +51,5 @@ permissions:
       - 'unsafe-inline'
   external:
     frames:
-      - address: https://b077-82-148-2-47.ngrok-free.app
+      - address: ${FORGE_REMOTE_APP_URL}/editor/bitbucket
 
-app:
-  runtime:
-    name: nodejs24.x
-    memoryMB: 256
-    architecture: arm64
-  id: ari:cloud:ecosystem::app/855aea4e-e3c0-438f-82bc-d7ade1a9bae2
