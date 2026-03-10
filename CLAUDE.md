@@ -4,39 +4,69 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Atlassian Forge app that adds a custom file viewer to Bitbucket Cloud's repository code viewer. It uses **Custom UI** (not UI Kit) with a React frontend and a Forge resolver backend.
+ONLYOFFICE app for Bitbucket Cloud built on the [Atlassian Forge](https://developer.atlassian.com/platform/forge/) platform. It adds a `bitbucket:repoCodeFileViewer` module that renders office files (DOCX, XLSX, PPTX, PDF, etc.) in Bitbucket repository views using ONLYOFFICE Docs.
 
-**Note:** Despite AGENTS.md mandating UI Kit and `@forge/react`, this app uses **Custom UI** with standard React (`react` 16.x, `react-dom`, `react-scripts`). The AGENTS.md rules about UI Kit components do not apply here.
+## Commands
+
+### Root (Forge backend)
+```bash
+npm run eslint          # Lint TypeScript files
+npm run eslint:fix      # Auto-fix lint issues
+```
+
+### Frontend (`static/onlyoffice-bitbucket-cloud-custom-ui/`)
+```bash
+npm run build           # Build with Vite (output: build/)
+npm run start           # Dev server
+```
+
+### Forge CLI (requires `npm install -g @forge/cli` and login)
+```bash
+forge deploy            # Deploy to Atlassian cloud
+forge install           # Install on a Bitbucket site
+forge tunnel            # Local development tunnel
+```
+
+> Before deploying, ensure `manifest.yml` has the correct `FORGE_APP_ID` and `FORGE_REMOTE_APP_URL` environment variable values.
 
 ## Architecture
 
-- **Backend** (`src/index.js`): Forge Resolver that exposes a `getContent` function. Fetches file content from the Bitbucket API using `api.asUser().requestBitbucket()` with the `route` template tag for safe URL interpolation.
-- **Frontend** (`static/file-viewer/src/`): Standard React app using `@forge/bridge` to invoke backend resolvers. Built with `react-scripts` and served as Forge static resources.
-- **Manifest** (`manifest.yml`): Declares a `bitbucket:repoCodeFileViewer` module, Node.js 24.x runtime (arm64, 256MB), and `read:repository:bitbucket` scope.
+The app has two layers: a **Forge backend** (Node.js function) and a **React custom UI** frontend.
 
-## Build & Development Commands
+### Request Flow
 
-```bash
-# Install dependencies (both root and frontend)
-npm install
-cd static/file-viewer && npm install
+1. User views an office file in a Bitbucket repository → Forge renders the `onlyoffice-viewer` Custom UI module.
+2. The React frontend calls `invoke("authorizeRemoteApp", { filePath, commit, repositoryUuid, workspaceId })` via `@forge/bridge`.
+3. The **Forge resolver** (`src/resolvers/editorPageResolver.ts`) handles the invocation:
+   - Uses `@forge/bitbucket` to extract context (workspace, repo, commit, file path).
+   - Calls the ONLYOFFICE Remote App's `/api/v1/remote/authorization` endpoint via `@forge/api` (`invokeRemote`).
+   - Returns `{ token, remoteAppUrl }`.
+4. The frontend (`static/.../src/pages/Editor/index.tsx`) embeds an `<iframe>` pointing to `${remoteAppUrl}/editor/bitbucket?mode=VIEW&token=${token}`.
+5. The iframe communicates back via `postMessage` (`DOCS_API_UNDEFINED`, `PAGE_IS_LOADED`).
 
-# Build frontend (required before deploy)
-cd static/file-viewer && npm run build
+### Key Files
 
-# Dev server for frontend
-cd static/file-viewer && npm start
+| File | Purpose |
+|------|---------|
+| `manifest.yml` | Forge app manifest — modules, permissions, environment variables, remote service |
+| `src/index.ts` | Forge entry point — exports the resolver |
+| `src/resolvers/editorPageResolver.ts` | `authorizeRemoteApp` resolver handler |
+| `src/client/index.ts` | HTTP client calling the remote ONLYOFFICE authorization API |
+| `src/types/types.ts` | Shared backend types (`RemoteAppAuthorization`, `ClientError`) |
+| `static/.../src/App.tsx` | Routes to EditorPage based on `moduleKey` |
+| `static/.../src/pages/Editor/index.tsx` | Fetches auth token and renders the ONLYOFFICE iframe |
+| `static/.../src/context/AppContext/index.tsx` | Error state and i18n translation context |
+| `locales/en-US.json` | UI strings for i18n |
 
-# Forge commands (run from repo root)
-forge lint                                    # Validate manifest.yml
-forge deploy --non-interactive -e development # Deploy to development
-forge install --non-interactive --site <site-url> --product bitbucket --environment development
-forge logs -n 100 -e development              # View recent logs
-```
+### Environment Variables (set in `manifest.yml`)
 
-## Key Conventions
+- `FORGE_APP_ID` — Forge app identifier
+- `FORGE_REMOTE_APP_URL` — Base URL of the ONLYOFFICE Docs Atlassian Remote instance
 
-- Use `.asUser()` for Bitbucket API calls (enforces user-level authorization)
-- Use `route` template tag from `@forge/api` for building API URLs (prevents injection)
-- Redeploy AND reinstall when changing scopes or permissions in manifest.yml
-- Code-only changes during tunneling are hot-reloaded without redeployment
+### Permissions
+
+The app requests these Bitbucket OAuth scopes: `read:repository:bitbucket`, `read:user:bitbucket`, `read:app-user-token`.
+
+### No Tests
+
+There are currently no automated tests in this repository.
