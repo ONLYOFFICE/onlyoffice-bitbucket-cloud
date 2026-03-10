@@ -34,8 +34,6 @@ remotes:
     operations:
       - compute
     auth:
-      appSystemToken:
-        enabled: true
       appUserToken:
         enabled: true
 
@@ -47,7 +45,6 @@ permissions:
   scopes:
     - read:repository:bitbucket
     - read:user:bitbucket
-    - read:app-system-token
     - read:app-user-token
   content:
     scripts:
