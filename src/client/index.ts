@@ -18,10 +18,7 @@
 
 import { APIResponse, invokeRemote } from "@forge/api";
 
-import {
-  ClientError,
-  RemoteAppAuthorization,
-} from "../../src/types/types";
+import { ClientError, RemoteAppAuthorization } from "../../src/types/types";
 
 export const postRemoteAppAuthorization = async (
   workspaceId: string,
@@ -44,7 +41,7 @@ export const postRemoteAppAuthorization = async (
         body: JSON.stringify({
           parentId: repositoryId,
           entityId: `${commit}:${filePath}`,
-          locale: locale
+          locale: locale,
         }),
       });
     },

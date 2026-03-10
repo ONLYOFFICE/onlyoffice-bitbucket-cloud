@@ -16,10 +16,10 @@
  *
  */
 
+import { unwrapUuid } from "@forge/bitbucket";
 import Resolver, { Request } from "@forge/resolver";
 
 import { postRemoteAppAuthorization } from "../client";
-import { unwrapUuid } from "@forge/bitbucket";
 
 const editorPageResolver = new Resolver();
 
@@ -29,7 +29,7 @@ editorPageResolver.define("authorizeRemoteApp", async (request: Request) => {
 
   const repositoryId = extension.repository.uuid;
   const filePath = extension.file.path;
-  const commit = extension.commit.hash;;
+  const commit = extension.commit.hash;
 
   return await postRemoteAppAuthorization(
     unwrapUuid(workspaceId),

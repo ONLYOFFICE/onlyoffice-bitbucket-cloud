@@ -82,7 +82,7 @@ const EditorPage: React.FC<EditorPageProps> = ({ context }) => {
       const handleMessage = (event: MessageEvent) => {
         if (event.origin !== remoteAppUrl.current) return;
 
-        const { type, data } = event.data;
+        const { type } = event.data;
 
         if (type === "DOCS_API_UNDEFINED") {
           setAppError({
