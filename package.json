@@ -1,8 +1,27 @@
 {
   "name": "@onlyoffice/bitbucket-cloud",
-  "version": "1.0.7",
+  "description": "ONLYOFFICE app for Bitbucket Cloud",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ONLYOFFICE/onlyoffice-bitbucket-cloud/issues",
+    "email": "support@onlyoffice.com"
+  },
+  "homepage": "https://github.com/ONLYOFFICE/onlyoffice-bitbucket-cloud",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ONLYOFFICE/onlyoffice-bitbucket-cloud.git"
+  },
+  "author": "Ascensio System SIA <integration@onlyoffice.com>",
+  "maintainers": [
+    "Ascensio System SIA <integration@onlyoffice.com> (https://www.onlyoffice.com)"
+  ],
+  "keywords": [
+    "docs",
+    "office",
+    "bitbucket",
+    "onlyoffice"
+  ],
   "main": "index.js",
-  "license": "MIT",
   "private": true,
   "scripts": {
     "eslint": "eslint \"**/*.{ts,tsx}\"",
