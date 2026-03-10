@@ -12,19 +12,26 @@ environment:
     - key: FORGE_REMOTE_APP_URL
       default: https://b077-82-148-2-47.ngrok-free.app
 
+translations:
+  resources:
+    - key: en-US
+      path: locales/en-US.json
+  fallback:
+    default: en-US
+
 modules:
   bitbucket:repoCodeFileViewer:
     - key: onlyoffice-viewer
       resource: custom-ui
       resolver:
-        function: resolver
+        function: editor-page-resolver
       title: ONLYOFFICE Viewer
   function:
-    - key: resolver
-      handler: index.handler
+    - key: editor-page-resolver
+      handler: index.editorPageResolver
 
 remotes:
-  - key: onlyoffice-remote
+  - key: remote-service
     baseUrl: ${FORGE_REMOTE_APP_URL}
     operations:
       - compute

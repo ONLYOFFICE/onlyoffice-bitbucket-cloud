@@ -1,19 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+/**
+ *
+ * (c) Copyright Ascensio System SIA 2026
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-import '@atlaskit/css-reset';
+import React from "react";
 
-// Forge Custom UI iframe uses auto-resize based on content height.
-// Percentage heights don't work because there is no fixed parent height.
-// We must set an explicit pixel height so the iframe resizer picks it up.
-const style = document.createElement('style');
-style.textContent = 'html, body, #root { margin: 0; padding: 0; }';
-document.head.appendChild(style);
+import AppProvider from "@atlaskit/app-provider";
+import { view } from "@forge/bridge";
+import ReactDOM from "react-dom/client";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import App from "./App";
+import { AppContextProvider } from "./context/AppContext";
+
+import "@atlaskit/css-reset";
+
+view.theme.enable();
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+root.render(
+  <AppProvider>
+    <AppContextProvider>
+      <App />
+    </AppContextProvider>
+  </AppProvider>,
 );

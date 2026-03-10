@@ -16,4 +16,7 @@
  *
  */
 
-export { default as editorPageResolver } from "./resolvers/editorPageResolver";
+export interface RemoteAppAuthorization {
+  token: string;
+  remoteAppUrl: string;
+}

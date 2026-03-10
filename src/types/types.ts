@@ -16,4 +16,17 @@
  *
  */
 
-export { default as editorPageResolver } from "./resolvers/editorPageResolver";
+export interface RemoteAppAuthorization {
+  token: string;
+  remoteAppUrl: string;
+}
+
+export class ClientError extends Error {
+  status: number | null;
+
+  constructor(message: string, status: number | null) {
+    super(message);
+    this.name = "ClientError";
+    this.status = status;
+  }
+}

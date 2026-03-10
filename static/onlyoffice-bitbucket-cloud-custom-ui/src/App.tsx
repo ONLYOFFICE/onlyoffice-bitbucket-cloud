@@ -1,32 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { invoke, view } from '@forge/bridge';
-import { Flex, xcss } from "@atlaskit/primitives";
-import Spinner from "@atlaskit/spinner";
+/**
+ *
+ * (c) Copyright Ascensio System SIA 2026
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-const styles = {
-  mainContainer: xcss({
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    margin: "0",
-    padding: "0",
-    justifyContent: "center",
-    alignItems: "center",
-  }),
-  iframe: {
-    width: "100%",
-    height: "100%",
-    border: "unset",
-  },
-};
+import React, { useEffect, useState } from "react";
+
+import { FullContext, view } from "@forge/bridge";
+
+import EditorPage from "./pages/Editor";
 
 function App() {
-  const [editorUrl, setEditorUrl] = useState(null);
-  const [error, setError] = useState(null);
-  const [context, setContext] = useState();
-
-  const [loading, setLoading] = useState(true);
+  const [context, setContext] = useState<FullContext>();
 
   useEffect(() => {
     (async () => {
@@ -35,68 +32,13 @@ function App() {
     })();
   }, []);
 
-
-  useEffect(() => {
-    // if (remoteAppUrl.current) {
-      const handleMessage = (event) => {
-        const { type, data } = event.data;
-
-
-        if (type === "PAGE_IS_LOADED") {
-          setLoading(false);
-        }
-      };
-
-      window.addEventListener("message", handleMessage);
-
-      return () => {
-        window.removeEventListener("message", handleMessage);
-      };
-    // }
-  }, );
-
-  useEffect(() => {
-    if (!context) return;
-
-    invoke('getEditorUrl', {
-      workspaceId: context.workspaceId,
-      repositoryId: context.extension.repository.uuid,
-      commit: context.extension.commit.hash,
-      filePath: context.extension.file.path,
-      locale: context.locale,
-    }).then((data) => {
-      if (data.error) {
-        setError(data.error);
-        return;
-      }
-      setEditorUrl(data.editorUrl);
-    }).catch((err) => {
-      console.error('Failed to get editor URL:', err);
-      setError('Failed to load file');
-    });
-  }, [context]);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
-    <Flex xcss={styles.mainContainer}>
-      {loading && <Spinner size="xlarge" label="Loading..." />}
-      {editorUrl && (
-        <iframe
-          // ref={iframeRef}
-          style={{
-            ...styles.iframe,
-            display: loading ? "none" : "block",
-          }}
-          src={editorUrl}
-        />
+    <>
+      {context && context.moduleKey === "onlyoffice-viewer" && (
+        <EditorPage context={context} />
       )}
-    </Flex>
+    </>
   );
-
-  
 }
 
 export default App;

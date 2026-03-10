@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@forge/api": "^7.0.2",
+    "@forge/bitbucket": "^1.0.3",
     "@forge/resolver": "1.7.1"
   }
 }
