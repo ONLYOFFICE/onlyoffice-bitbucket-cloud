@@ -4,33 +4,37 @@ modules:
       resource: main
       resolver:
         function: resolver
-      title: ONLYOFFICE app for Bitbucket Cloud
-  webtrigger:
-    - key: file-proxy
-      function: file-proxy-handler
-      response:
-        type: dynamic
+      title: ONLYOFFICE Viewer
   function:
     - key: resolver
       handler: index.handler
-    - key: file-proxy-handler
-      handler: index.fileProxyHandler
+remotes:
+  - key: onlyoffice-remote
+    baseUrl: https://d5a2-101-44-32-127.ngrok-free.app
+    operations:
+      - compute
+    auth:
+      appSystemToken:
+        enabled: true
+      appUserToken:
+        enabled: true
 resources:
   - key: main
     path: static/file-viewer/build
 permissions:
   scopes:
     - read:repository:bitbucket
+    - read:user:bitbucket
+    - read:app-system-token
+    - read:app-user-token
   content:
     scripts:
       - 'unsafe-inline'
     styles:
       - 'unsafe-inline'
   external:
-    scripts:
-      - address: https://asc.docs.teamlab.info
     frames:
-      - address: https://asc.docs.teamlab.info
+      - address: https://d5a2-101-44-32-127.ngrok-free.app
 
 app:
   runtime:

@@ -5,6 +5,8 @@
   "homepage": ".",
   "dependencies": {
     "@atlaskit/css-reset": "^6.6.2",
+    "@atlaskit/primitives": "^13.6.0",
+    "@atlaskit/spinner": "^17.2.0",
     "@forge/bridge": "5.13.0",
     "react": "^16",
     "react-dom": "^16"

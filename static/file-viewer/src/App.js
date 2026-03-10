@@ -1,53 +1,102 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { invoke } from '@forge/bridge';
+import React, { useEffect, useState } from 'react';
+import { invoke, view } from '@forge/bridge';
+import { Flex, xcss } from "@atlaskit/primitives";
+import Spinner from "@atlaskit/spinner";
+
+const styles = {
+  mainContainer: xcss({
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: "100%",
+    margin: "0",
+    padding: "0",
+    justifyContent: "center",
+    alignItems: "center",
+  }),
+  iframe: {
+    width: "100%",
+    height: "100%",
+    border: "unset",
+  },
+};
 
 function App() {
+  const [editorUrl, setEditorUrl] = useState(null);
   const [error, setError] = useState(null);
-  const editorRef = useRef(null);
+  const [context, setContext] = useState();
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    invoke('getContent').then((data) => {
-      console.log("getContent data:", data);
+    (async () => {
+      const context = await view.getContext();
+      setContext(context);
+    })();
+  }, []);
 
+
+  useEffect(() => {
+    // if (remoteAppUrl.current) {
+      const handleMessage = (event) => {
+        const { type, data } = event.data;
+
+
+        if (type === "PAGE_IS_LOADED") {
+          setLoading(false);
+        }
+      };
+
+      window.addEventListener("message", handleMessage);
+
+      return () => {
+        window.removeEventListener("message", handleMessage);
+      };
+    // }
+  }, );
+
+  useEffect(() => {
+    if (!context) return;
+
+    invoke('getEditorUrl', {
+      workspaceId: context.workspaceId,
+      repositoryId: context.extension.repository.uuid,
+      commit: context.extension.commit.hash,
+      filePath: context.extension.file.path,
+      locale: context.locale,
+    }).then((data) => {
       if (data.error) {
         setError(data.error);
         return;
       }
-
-      const config = {
-        ...data.config,
-        // Use a fixed pixel height because the Forge iframe auto-resizes
-        // based on content. Percentage values collapse to 0.
-        height: '800px',
-        width: '100%',
-      };
-
-      // Initialize the ONLYOFFICE editor in the placeholder div.
-      // The config (including JWT token) is fully prepared by the backend.
-      editorRef.current = new window.DocsAPI.DocEditor('onlyoffice-editor', config);
+      setEditorUrl(data.editorUrl);
     }).catch((err) => {
-      console.error('Failed to load editor config:', err);
+      console.error('Failed to get editor URL:', err);
       setError('Failed to load file');
     });
-
-    // Cleanup: destroy the editor instance when the component unmounts
-    return () => {
-      if (editorRef.current) {
-        editorRef.current.destroyEditor();
-        editorRef.current = null;
-      }
-    };
-  }, []);
+  }, [context]);
 
   if (error) {
     return <div>{error}</div>;
   }
 
   return (
-    <div>
-      <div id="onlyoffice-editor"></div>
-    </div>
+    <Flex xcss={styles.mainContainer}>
+      {loading && <Spinner size="xlarge" label="Loading..." />}
+      {editorUrl && (
+        <iframe
+          // ref={iframeRef}
+          style={{
+            ...styles.iframe,
+            display: loading ? "none" : "block",
+          }}
+          src={editorUrl}
+        />
+      )}
+    </Flex>
   );
+
+  
 }
 
 export default App;
