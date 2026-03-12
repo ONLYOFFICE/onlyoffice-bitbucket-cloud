@@ -24,6 +24,7 @@ modules:
       resolver:
         function: editor-page-resolver
       title: ONLYOFFICE Viewer
+      filePattern: ".*\\.(doc|docm|docx|dot|dotm|dotx|epub|fb2|fodt|odt|ott|pages|rtf|fods|numbers|ods|ots|xls|xlsb|xlsm|xlsx|xlt|xltm|xltx|fodp|key|odg|odp|otp|pot|potm|potx|pps|ppsm|ppsx|ppt|pptm|pptx|djvu|oxps|pdf|xps|vsdm|vsdx|vssm|vssx|vstm|vstx)$"
   function:
     - key: editor-page-resolver
       handler: index.editorPageResolver
