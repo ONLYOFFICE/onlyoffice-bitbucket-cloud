@@ -16,6 +16,9 @@ on:
       - '**/*.tsx'
       - '**/*.yml'
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint 
