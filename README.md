@@ -40,7 +40,7 @@ npm install
 
 3. Install dependencies in Custom UI Project:
 ```
-cd static/onlyoffice-bitbucket-docs-forge-custom-ui
+cd static/onlyoffice-bitbucket-cloud-custom-ui
 npm install
 ```
 
