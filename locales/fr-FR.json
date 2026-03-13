@@ -1,0 +1,20 @@
+{
+  "buttons": {
+    "reload-app": {
+      "title": "Recharger l'application"
+    }
+  },
+  "labels": {
+    "loading": "Chargement"
+  },
+  "error-state": {
+    "common": {
+      "title": "Erreur de chargement de l'application",
+      "description": "Une erreur inattendue est survenue lors du chargement de l'application. Veuillez la recharger pour continuer."
+    },
+    "docs-api-undefined": {
+      "title": "Erreur de chargement d’ONLYOFFICE Docs",
+      "description": "Le serveur ONLYOFFICE Docs est inaccessible. Veuillez contacter l'administrateur."
+    }
+  }
+}

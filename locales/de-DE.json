@@ -1,0 +1,20 @@
+{
+  "buttons": {
+    "reload-app": {
+      "title": "App neu laden"
+    }
+  },
+  "labels": {
+    "loading": "Wird geladen"
+  },
+  "error-state": {
+    "common": {
+      "title": "Error al cargar la aplicación",
+      "description": "Se ha producido un error inesperado al cargar la aplicación. Por favor, vuelva a cargarla para continuar."
+    },
+    "docs-api-undefined": {
+      "title": "Error al cargar ONLYOFFICE Docs",
+      "description": "No se puede acceder al servidor de ONLYOFFICE Docs. Por favor, póngase en contacto con el administrador."
+    }
+  }
+}
