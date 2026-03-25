@@ -24,10 +24,10 @@ This app allows users to view office files in [Bitbucket Cloud](https://www.atla
 ## App installation 📥
 
 1. Go to [marketplace.atlassian.com](http://marketplace.atlassian.com/).
-2. Сhoose the ONLYOFFICE Connector for Bitbucket and click the **Get it now** button.
+2. Choose the ONLYOFFICE Connector for Bitbucket and click the **Get it now** button.
 3. In the pop-up window, select the site where you'd like to install your app and choose the edition you prefer, if multiple editions are available.
 
-> Please note: App configuration is not required — there’s no settings page. The editors are accessed via a demo server.
+> Please note: App configuration is not required — there's no settings page. The editors are accessed via a demo server.
 
 ## Development
 
