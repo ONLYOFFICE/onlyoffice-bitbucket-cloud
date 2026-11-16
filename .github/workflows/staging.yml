@@ -3,28 +3,31 @@ name: Staging
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
+    if: github.server_url == 'https://github.com'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
+          package-manager-cache: false
       - name: Install Forge CLI
         run: npm install -g @forge/cli
       - name: Disable Forge usage analytics
         run: forge settings set usage-analytics false
       - name: Install dependencies in Forge Root Project
-        run: npm install
+        run: npm ci
       - name: Install dependencies in Forge Custom UI Project
-        run: npm install
+        run: npm ci
         working-directory: ./static/onlyoffice-bitbucket-cloud-custom-ui
       - name: Build Forge Custom UI Project
         run: npm run build
-        working-directory:  ./static/onlyoffice-bitbucket-cloud-custom-ui
+        working-directory: ./static/onlyoffice-bitbucket-cloud-custom-ui
       - name: Deploy Forge app
         run: forge deploy --environment staging --non-interactive
         env:

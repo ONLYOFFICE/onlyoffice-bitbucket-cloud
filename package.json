@@ -1,0 +1,51 @@
+{
+  "name": "@onlyoffice/bitbucket-cloud",
+  "version": "1.1.0",
+  "description": "ONLYOFFICE app for Bitbucket Cloud",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ONLYOFFICE/onlyoffice-bitbucket-cloud/issues",
+    "email": "support@onlyoffice.com"
+  },
+  "homepage": "https://github.com/ONLYOFFICE/onlyoffice-bitbucket-cloud",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ONLYOFFICE/onlyoffice-bitbucket-cloud.git"
+  },
+  "author": "Ascensio System SIA <integration@onlyoffice.com>",
+  "maintainers": [
+    "Ascensio System SIA <integration@onlyoffice.com> (https://www.onlyoffice.com)"
+  ],
+  "keywords": [
+    "docs",
+    "office",
+    "bitbucket",
+    "onlyoffice"
+  ],
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "eslint": "eslint \"**/*.{ts,tsx}\"",
+    "eslint:fix": "eslint \"**/*.{ts,tsx}\" --fix"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.28",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-license-header": "^0.8.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@forge/api": "^7.0.2",
+    "@forge/bitbucket": "^1.0.3",
+    "@forge/resolver": "1.7.1"
+  }
+}

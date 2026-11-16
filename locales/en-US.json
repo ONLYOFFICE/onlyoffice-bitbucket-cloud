@@ -1,0 +1,20 @@
+{
+  "buttons": {
+    "reload-app": {
+      "title": "Reload"
+    }
+  },
+  "labels": {
+    "loading": "Loading"
+  },
+  "error-state": {
+    "common": {
+      "title": "App loading error",
+      "description": "An unexpected error occurred while loading the application. Please reload it to continue."
+    },
+    "docs-api-undefined": {
+      "title": "Document Server Error",
+      "description": "Failed to connect to the ONLYOFFICE Document Server. Please check your server configuration."
+    }
+  }
+}

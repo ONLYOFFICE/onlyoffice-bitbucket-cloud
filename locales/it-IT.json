@@ -1,0 +1,20 @@
+{
+  "buttons": {
+    "reload-app": {
+      "title": "Ricarica app"
+    }
+  },
+  "labels": {
+    "loading": "Caricamento"
+  },
+  "error-state": {
+    "common": {
+      "title": "Errore di caricamento dell'app",
+      "description": "Si è verificato un errore imprevisto durante il caricamento dell'applicazione. Ricaricala per continuare."
+    },
+    "docs-api-undefined": {
+      "title": "Errore di caricamento ONLYOFFICE Docs",
+      "description": "Il server ONLYOFFICE Docs non è raggiungibile. Contatta l'amministratore."
+    }
+  }
+}

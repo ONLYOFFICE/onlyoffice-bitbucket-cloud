@@ -1,0 +1,68 @@
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/${FORGE_APP_ID}
+
+environment:
+  variables:
+    - FORGE_APP_ID
+    - FORGE_REMOTE_APP_URL
+
+translations:
+  resources:
+    - key: de-DE
+      path: locales/de-DE.json
+    - key: en-US
+      path: locales/en-US.json
+    - key: es-ES
+      path: locales/es-ES.json
+    - key: fr-FR
+      path: locales/fr-FR.json
+    - key: it-IT
+      path: locales/it-IT.json
+    - key: ru-RU
+      path: locales/ru-RU.json
+  fallback:
+    default: en-US
+
+modules:
+  bitbucket:repoCodeFileViewer:
+    - key: onlyoffice-viewer
+      resource: custom-ui
+      resolver:
+        function: editor-page-resolver
+      title: ONLYOFFICE Viewer
+      filePattern: ".*\\.(doc|docm|docx|dot|dotm|dotx|epub|fb2|fodt|odt|ott|pages|rtf|fods|numbers|ods|ots|xls|xlsb|xlsm|xlsx|xlt|xltm|xltx|fodp|key|odg|odp|otp|pot|potm|potx|pps|ppsm|ppsx|ppt|pptm|pptx|djvu|oxps|pdf|xps|vsdm|vsdx|vssm|vssx|vstm|vstx)$"
+  function:
+    - key: editor-page-resolver
+      handler: index.editorPageResolver
+
+remotes:
+  - key: remote-service
+    baseUrl: ${FORGE_REMOTE_APP_URL}
+    operations:
+      - compute
+    auth:
+      appUserToken:
+        enabled: true
+
+resources:
+  - key: custom-ui
+    path: static/onlyoffice-bitbucket-cloud-custom-ui/build
+
+permissions:
+  scopes:
+    - read:repository:bitbucket
+    - read:user:bitbucket
+    - read:app-user-token
+  content:
+    scripts:
+      - 'unsafe-inline'
+    styles:
+      - 'unsafe-inline'
+  external:
+    frames:
+      - address: ${FORGE_REMOTE_APP_URL}/editor/bitbucket
+
