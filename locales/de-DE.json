@@ -9,12 +9,12 @@
   },
   "error-state": {
     "common": {
-      "title": "Error al cargar la aplicación",
-      "description": "Se ha producido un error inesperado al cargar la aplicación. Por favor, vuelva a cargarla para continuar."
+      "title": "Fehler beim Laden der App",
+      "description": "Beim Laden der Anwendung ist ein unerwarteter Fehler aufgetreten. Bitte laden Sie sie neu, um fortzufahren."
     },
     "docs-api-undefined": {
-      "title": "Error al cargar ONLYOFFICE Docs",
-      "description": "No se puede acceder al servidor de ONLYOFFICE Docs. Por favor, póngase en contacto con el administrador."
+      "title": "Fehler beim Laden von ONLYOFFICE Docs",
+      "description": "Der ONLYOFFICE Docs-Server ist nicht erreichbar. Bitte wenden Sie sich an den Administrator."
     }
   }
 }
