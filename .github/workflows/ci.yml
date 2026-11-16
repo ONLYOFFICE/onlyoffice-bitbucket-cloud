@@ -2,42 +2,50 @@ name: CI
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [opened, reopened]
-    branches: [master, develop]
-    paths:
-      - '**/*.ts'
-      - '**/*.tsx'
-      - '**/*.yml'
   push:
     branches: [master, develop]
-    paths:
-      - '**/*.ts'
-      - '**/*.tsx'
-      - '**/*.yml'
+    paths-ignore:
+      - "**/LICENSE"
+      - "**/README.md"
+      - ".github/workflows/create-tag.yml"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/staging.yml"
+      - ".github/workflows/licenses.yml"
+  pull_request:
+    paths-ignore:
+      - "**/LICENSE"
+      - "**/README.md"
+      - ".github/workflows/create-tag.yml"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/staging.yml"
+      - ".github/workflows/licenses.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  lint:
-    name: Lint 
+  check:
+    name: Lint, typecheck & build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
-
-      - name: Install Dependencies
-        run: |
-          cd ${{ github.workspace }}
-          npm install
-
-      - name: Run Code Style Checks
-        run: |
-          cd ${{ github.workspace }}
-          npm run eslint
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            static/onlyoffice-bitbucket-cloud-custom-ui/package-lock.json
+      - run: npm ci
+      - run: npm ci
+        working-directory: ./static/onlyoffice-bitbucket-cloud-custom-ui
+      - run: npm run typecheck
+      - run: npm run typecheck
+        working-directory: ./static/onlyoffice-bitbucket-cloud-custom-ui
+      - run: npm run eslint
+      - run: npm run build
+        working-directory: ./static/onlyoffice-bitbucket-cloud-custom-ui

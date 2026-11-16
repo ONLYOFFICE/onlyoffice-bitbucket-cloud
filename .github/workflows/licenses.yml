@@ -4,39 +4,42 @@ on:
   workflow_dispatch:
   push:
     branches: [master, develop]
+    paths:
+      - "**/package.json"
+      - "**/package-lock.json"
+      - ".github/workflows/licenses.yml"
   pull_request:
-    branches: [master, develop]
+    paths:
+      - "**/package.json"
+      - "**/package-lock.json"
+      - ".github/workflows/licenses.yml"
 
 permissions:
   contents: read
 
 jobs:
-  licences:
+  licenses:
+    name: Dependency licenses
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
-      - name: Install Dependencies
-        run: npm install
-      - name: Install Dependencies - Custom UI
-        run: npm install
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            static/onlyoffice-bitbucket-cloud-custom-ui/package-lock.json
+      - run: npm ci
+      - run: npm ci
         working-directory: ./static/onlyoffice-bitbucket-cloud-custom-ui
-      - name: Get Repository License
+      - name: Get project license
         id: license
-        run: |
-          license="${{ (github.event.repository.license.spdx_id) || (github.event.repository.licenses[0]) }}"
-          echo "License detected: $license"
-          echo "license=$license" >> $GITHUB_OUTPUT
-      - name: Check Licenses
-        uses: ONLYOFFICE/check-licenses@v1
+        run: echo "license=$(node -p "require('./package.json').license")" >> "$GITHUB_OUTPUT"
+      - uses: ONLYOFFICE/check-licenses@v1
         with:
           project_license: ${{ steps.license.outputs.license }}
-      - name: Check Licenses - Custom UI
-        uses: ONLYOFFICE/check-licenses@v1
+      - uses: ONLYOFFICE/check-licenses@v1
         with:
           project_license: ${{ steps.license.outputs.license }}
           working_directory: ./static/onlyoffice-bitbucket-cloud-custom-ui

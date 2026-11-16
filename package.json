@@ -24,6 +24,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "eslint": "eslint \"**/*.{ts,tsx}\"",
     "eslint:fix": "eslint \"**/*.{ts,tsx}\" --fix"
   },
